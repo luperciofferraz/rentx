@@ -15,7 +15,23 @@ import {
 
 } from './styles';
 
-export function Car() {
+interface CardData {
+
+    brand: string;
+    name: string;
+    rent: {
+        period: string;
+        price: number;
+    },
+    thumbnail
+
+}
+interface Props {
+
+    data: CardData;
+}
+
+export function Car({ data }: Props) {
 
     return (
 
@@ -23,14 +39,14 @@ export function Car() {
             
             <Details>
 
-                <Brand>AUDI</Brand>
-                <Name>R$ 5 Coupé</Name>
+                <Brand>{data.brand}</Brand>
+                <Name>{data.name}</Name>
 
                 <About>
 
                     <Rent>
-                        <Period>Ao dia</Period>
-                        <Price>R$ 120</Price>
+                        <Period>{data.rent.period}</Period>
+                        <Price>{ `R$ ${data.rent.price}` }</Price>
                     </Rent>
 
                     <Type>
@@ -41,7 +57,10 @@ export function Car() {
 
             </Details>
 
-            <CarImage source={{ uri: ''}}/>
+            <CarImage 
+                source={{ uri: data.thumbnail }}
+                resizeMode='contain'
+            />
 
         </Container>
 
