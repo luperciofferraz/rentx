@@ -1,18 +1,15 @@
 import React from 'react';
-import { SvgProps } from 'react-native-svg';
-import GasolineSvg from '../../assets/gasoline.svg';
+import { useTheme } from 'styled-components';
+import { RectButtonProps } from 'react-native-gesture-handler';
 
 import {
     Container,
     Title
-
 } from './styles';
 
-interface Props {
-
+interface Props extends RectButtonProps {
     title: string;
     color?: string;
-    onPress: () => void;
 }
 
 export function Button({ 
@@ -21,9 +18,14 @@ export function Button({
     ...rest
 }: Props) {
 
+    const theme = useTheme();
+
     return (
 
-        <Container {...rest} color={color} >
+        <Container 
+            {...rest} 
+            color={color ? color : theme.colors.main} 
+        >
             <Title>{title}</Title>
         </Container>
 
