@@ -26,21 +26,8 @@ export function Home() {
 
     const navigation = useNavigation();
 
-    const carData = {
-
-        brand: 'Audi',
-        name: 'RS 5 Coupé',
-        rent: {
-
-            period: 'AO DIA',
-            price: 120,
-        },
-        thumbnail: 'https://freepngimg.com/thumb/audi/35227-5-audi-rs5-red.png',
-
-    }
-
-    function handleCarDetails() {
-        navigation.navigate('CarDetails');
+    function handleCarDetails(car: CarDTO) {
+        navigation.navigate('CarDetails', {car});
     }
 
     async function fetchCars() {
@@ -102,7 +89,7 @@ export function Home() {
                     data={cars}
                     keyExtractor={item => String(item.id)}
                     renderItem={({ item }) => 
-                        <Car data={item} onPress={handleCarDetails} />
+                        <Car data={item} onPress={() => handleCarDetails(item)} />
                     }
                 />   
             }
