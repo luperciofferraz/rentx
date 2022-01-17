@@ -67,6 +67,11 @@ export function SchedulingDetails() {
 
         const unavailable_dates = [ ...schedulesByCar.data.unavailable_dates, ...dates ];
 
+        api.put(`/schedules_byuser/${car.id}`, {
+            user_id: 1,
+            car
+        });
+
         api.put(`/schedules_bycars/${car.id}`, {
             id: car.id,
             unavailable_dates,
