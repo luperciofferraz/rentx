@@ -64,7 +64,7 @@ export function SchedulingDetails() {
 
     async function handleConfirmRental() {
 
-        setLoding(true);
+        setLoading(true);
         
         const schedulesByCar = await api.get(`/schedules_bycars/${car.id}`);
 
