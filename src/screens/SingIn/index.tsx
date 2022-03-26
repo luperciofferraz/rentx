@@ -1,7 +1,14 @@
 import React from 'react';
-import { StatusBar } from 'react-native';
+import { 
+   StatusBar, 
+   KeyboardAvoidingView, 
+   TouchableWithoutFeedback, 
+   Keyboard
+} from 'react-native';
 import { useTheme } from 'styled-components';
 import { Button } from '../../components/Button';
+import { Input } from '../../components/Input';
+import { PasswordInput } from '../../components/PasswordInput';
 
 import {
 
@@ -9,7 +16,8 @@ import {
    Header,
    Title,
    SubTitle,
-   Footer
+   Footer,
+   Form
    
 } from './styles';
 
@@ -19,47 +27,68 @@ export function SingIn() {
 
    return (
 
-      <Container>
+      <KeyboardAvoidingView behavior="position" enabled>
+         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <Container>
 
-         <StatusBar
-            barStyle="dark-content"
-            backgroundColor="transparent"
-            translucent
-         />
+               <StatusBar
+                  barStyle="dark-content"
+                  backgroundColor="transparent"
+                  translucent
+               />
 
-         <Header>
+               <Header>
 
-            <Title>
-               Estamos{'\n'}quase lá.
-            </Title>
-            <SubTitle>
-               Faça seu login para começar{'\n'}
-               uma experiência incrível.
-            </SubTitle>
+                  <Title>
+                     Estamos{'\n'}quase lá.
+                  </Title>
+                  <SubTitle>
+                     Faça seu login para começar{'\n'}
+                     uma experiência incrível.
+                  </SubTitle>
 
-         </Header>
+               </Header>
 
-         <Footer>
-            
-            <Button
-               title="Login"
-               onPress={() => {}}
-               enabled={false}
-               loading={false}
-            />
+               <Form>
+                  
+                  <Input 
+                     iconName="mail"
+                     placeholder="E-mail"
+                     keyboardType="email-address"
+                     autoCorrect={false}
+                     autoCapitalize="none"
+                  />
 
-            <Button
-               title="Criar conta gratuita"
-               color={theme.colors.background_secondary}
-               light
-               onPress={() => {}}
-               enabled={false}
-               loading={false}
-            />
+                  <PasswordInput 
+                     iconName="lock"
+                     placeholder="Senha"
+                  />
+                  
+               </Form>
 
-         </Footer>
+               <Footer>
+                  
+                  <Button
+                     title="Login"
+                     onPress={() => {}}
+                     enabled={false}
+                     loading={false}
+                  />
 
-      </Container>
+                  <Button
+                     title="Criar conta gratuita"
+                     color={theme.colors.background_secondary}
+                     light
+                     onPress={() => {}}
+                     enabled={false}
+                     loading={false}
+                  />
+
+               </Footer>
+
+            </Container>
+         </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
 
    );
 }
