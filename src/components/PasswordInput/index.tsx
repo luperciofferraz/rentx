@@ -63,7 +63,7 @@ export function PasswordInput({ iconName, value, ...rest } : Props) {
         <BorderlessButton onPress={handlePasswordVisbilityChange}>
             <IconContainer isFocused={isFocused}>
                 <Feather 
-                    name={!isPasswordVisible ? 'eye' : 'eye-off'}
+                    name={isPasswordVisible ? 'eye' : 'eye-off'}
                     size={24}
                     color={theme.colors.text_detail}
                 />

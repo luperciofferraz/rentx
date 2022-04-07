@@ -3,12 +3,15 @@ import {
    StatusBar, 
    KeyboardAvoidingView, 
    TouchableWithoutFeedback, 
-   Keyboard
+   Keyboard,
+   Alert
 } from 'react-native';
+import { useNavigation } from '@react-navigation/native'; 
 import { useTheme } from 'styled-components';
 import { Button } from '../../components/Button';
 import { Input } from '../../components/Input';
 import { PasswordInput } from '../../components/PasswordInput';
+import * as Yup from 'yup';
 
 import {
 
@@ -25,10 +28,43 @@ export function SingIn() {
 
    const [email, setEmail] = useState('');
    const [password, setPassword] = useState('');
-
-
    const theme = useTheme();
+   const navigation = useNavigation();
 
+   async function handleSignIn() {
+
+      try {
+
+         const schema = Yup.object().shape({
+
+            email: Yup.string()
+               .required('O E-mail é obrigatório')
+               .email('Digite um e-mail válido'),
+            password: Yup.string()
+               .required('A Senha é obrigatório')
+   
+         });
+   
+         await schema.validate({ email, password });
+         Alert.alert('Tudo ok');
+   
+      }
+      catch(error) {
+         if (error instanceof Yup.ValidationError) {
+            Alert.alert('Opa',error.message);
+         }
+         else {
+            Alert.alert('Erro na autenticação','Ocorreu um erro ao fazer login, verifique suas credenciais');
+         }
+
+      }
+
+   }
+
+   function handleSignUp() {
+      navigation.navigate("SignUpFirstStep");
+   }
+ 
    return (
 
       <KeyboardAvoidingView behavior="position" enabled>
@@ -78,8 +114,8 @@ export function SingIn() {
                   
                   <Button
                      title="Login"
-                     onPress={() => {}}
-                     enabled={false}
+                     onPress={handleSignIn}
+                     enabled={true}
                      loading={false}
                   />
 
@@ -87,8 +123,8 @@ export function SingIn() {
                      title="Criar conta gratuita"
                      color={theme.colors.background_secondary}
                      light
-                     onPress={() => {}}
-                     enabled={false}
+                     onPress={handleSignUp}
+                     enabled={true}
                      loading={false}
                   />
 
