@@ -6,10 +6,10 @@ import { CarDetails } from '../screens/CarDetails';
 import { Home } from '../screens/Home';
 import { Scheduling } from '../screens/Scheduling';
 import { SchedulingDetails } from '../screens/SchedulingDetails';
-import { SchedulingComplete } from '../screens/SchedulingComplete';
+import { Confirmation } from '../screens/Confirmation';
 import { MyCars } from '../screens/MyCars';
 import { Splash } from '../screens/Splash';
-import { SingIn } from '../screens/SingIn';
+import { SignIn } from '../screens/SignIn';
 import { SignUpFirstStep } from '../screens/SignUp/SignUpFirstStep';
 import { SignUpSecondStep } from '../screens/SignUp/SignUpSecondStep';
 
@@ -25,8 +25,8 @@ export function StackRoutes() {
         >
 
             <Screen 
-                name="SingIn"
-                component={SingIn}
+                name="SignIn"
+                component={SignIn}
             />
 
             <Screen 
@@ -63,8 +63,8 @@ export function StackRoutes() {
             />
 
             <Screen 
-                name="SchedulingComplete"
-                component={SchedulingComplete}
+                name="Confirmation"
+                component={Confirmation}
             />
 
             <Screen 
