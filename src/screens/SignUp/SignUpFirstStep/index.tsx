@@ -24,7 +24,7 @@ export function SignUpFirstStep() {
 
    const [name, setName] = useState('');
    const [email, setEmail] = useState('');
-   const [driverLicence, setDriverLicence] = useState('');
+   const [driverLicense, setDriverLicense] = useState('');
 
    const navigation = useNavigation();
 
@@ -38,7 +38,7 @@ export function SignUpFirstStep() {
 
          const schema = Yup.object().shape({
 
-            driverLicence: Yup.string()
+            driverLicense: Yup.string()
             .required('CNH é obrigatória'),
             email: Yup.string()
             .email('E-mail inválido')
@@ -48,7 +48,7 @@ export function SignUpFirstStep() {
 
          });         
 
-         const data = { name, email, driverLicence };
+         const data = { name, email, driverLicense };
 
          await schema.validate(data);
 
@@ -115,8 +115,8 @@ export function SignUpFirstStep() {
                      iconName="credit-card"
                      placeholder="CNH"
                      keyboardType="numeric"
-                     onChangeText={setDriverLicence}
-                     value={driverLicence}
+                     onChangeText={setDriverLicense}
+                     value={driverLicense}
                   />
 
                </Form>

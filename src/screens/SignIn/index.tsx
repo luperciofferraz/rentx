@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native'; 
 import { useTheme } from 'styled-components';
+import { useAuth }  from '../../hooks/auth';
 import { Button } from '../../components/Button';
 import { Input } from '../../components/Input';
 import { PasswordInput } from '../../components/PasswordInput';
@@ -30,6 +31,7 @@ export function SignIn() {
    const [password, setPassword] = useState('');
    const theme = useTheme();
    const navigation = useNavigation();
+   const { signIn } = useAuth();
 
    async function handleSignIn() {
 
@@ -46,8 +48,8 @@ export function SignIn() {
          });
    
          await schema.validate({ email, password });
-         Alert.alert('Tudo ok');
-   
+
+         signIn({ email, password });
       }
       catch(error) {
          if (error instanceof Yup.ValidationError) {
