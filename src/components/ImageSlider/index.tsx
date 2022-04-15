@@ -10,11 +10,13 @@ import {
 
 } from './styles';
 
-
-interface Props {
-    imagesUrl: string[];
+interface Photos {
+    id: string;
+    photo: string;
 }
-
+interface Props {
+    imagesUrl: Photos[];
+}
 interface ChangeImageProps {
 
     viewableItems: ViewToken[];
@@ -38,10 +40,10 @@ export function ImageSlider({ imagesUrl }:Props) {
             <ImageIndexes>
                
                 {
-                    imagesUrl.map((_,index) => (
+                    imagesUrl.map((item,index) => (
 
                         <Bullet 
-                            key={String(index)}
+                            key={String(item.id)}
                             active={index === imageIndex} 
                         />
 
@@ -52,13 +54,13 @@ export function ImageSlider({ imagesUrl }:Props) {
 
             <FlatList
                 data={imagesUrl}
-                keyExtractor={key => key}
+                keyExtractor={item => item.id}
                 renderItem={({ item }) => (
 
                     <CarImageWrapper>
                         <CarImage 
 
-                            source={{ uri: item }}
+                            source={{ uri: item.photo }}
                             resizeMode="contain"
                         
                         />

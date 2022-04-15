@@ -1,9 +1,9 @@
-interface Rent {
-    period: string;
-    price: number;
+interface Photo {
+    id: string;
+    photo: string;
 }
-
 interface Accessory {
+    id: string;
     type: string;
     name: string;
 }
@@ -13,9 +13,10 @@ export interface CarDTO {
     brand: string;
     name: string;
     about: string;
-    rent: Rent;
+    period: string;
+    price: number;
     fuel_type: string;
     thumbnail: string;
     accessories: Accessory[]
-    photos: string[];
+    photos: Photo[];
 }
