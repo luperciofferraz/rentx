@@ -12,7 +12,15 @@ export function Routes() {
    return (
 
       <NavigationContainer>
-        { user ? <AppTabRoutes /> : <AuthRoutes /> }
+
+        {
+            console.log('UserId:' + user.id != 'undefined' ? user.name + ' - ' + user.id : user.id )
+        }        
+        
+        { 
+            user.id ? <AppTabRoutes /> : <AuthRoutes /> 
+        }
+
       </NavigationContainer>
 
    );
