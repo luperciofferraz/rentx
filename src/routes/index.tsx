@@ -13,10 +13,6 @@ export function Routes() {
 
       <NavigationContainer>
 
-        {
-            console.log('UserId:' + user.id != 'undefined' ? user.name + ' - ' + user.id : user.id )
-        }        
-        
         { 
             user.id ? <AppTabRoutes /> : <AuthRoutes /> 
         }
