@@ -56,7 +56,8 @@ export function PasswordInput({ iconName, value, ...rest } : Props) {
             onFocus={handleInputFocus}
             onBlur={handleInputBlur}
             secureTextEntry={isPasswordVisible}
-             isFocused={isFocused}
+            autoCorrect={false}
+            isFocused={isFocused}
             {...rest} 
         />
 
