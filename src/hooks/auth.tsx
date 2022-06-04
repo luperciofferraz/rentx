@@ -16,7 +16,7 @@ interface User {
     user_id: string;
     email: string;
     name: string;
-    driver_licence: string;
+    driver_license: string;
     avatar: string;
     token: string;
 }
@@ -28,6 +28,8 @@ interface SignInCredentials {
 interface AuthContextData {
     user: User;
     signIn: (credentials: SignInCredentials) => Promise<void>;
+    signOut: () => Promise<void>;
+    updateUser: (user: User) => Promise<void>;
 }
 
 interface AuthProviderProps {
@@ -73,6 +75,48 @@ function AuthProvider({ children } : AuthProviderProps) {
 
     }  
 
+    async function signOut() {
+
+        try {
+
+            const userCollection = database.get<ModelUser>('users');
+            await database.action(async () => {
+                const userSelected = await userCollection.find(data.id);
+                await userSelected.destroyPermanently();
+            });
+
+            setData({} as User);
+
+        }
+        catch (error) {
+            throw new Error(error);
+        } 
+
+    }
+
+    async function updateUser(user: User) {
+
+        try {
+
+            const userCollection = database.get<ModelUser>('users');
+
+            await database.action(async () => {
+                const userSelected = await userCollection.find(user.id);
+                await userSelected.update(( userData ) => {
+                    userData.name = user.name;
+                    userData.driver_license = user.driver_license;
+                    userData.avatar = user.avatar;
+                });
+            });
+
+            setData(user);
+        }
+        catch(error) {
+            throw new Error(error);
+        }
+
+    }
+ 
     useEffect(() => {
 
         async function loadUserData() {
@@ -95,7 +139,9 @@ function AuthProvider({ children } : AuthProviderProps) {
         <AuthContext.Provider 
             value={{
                 user: data,
-                signIn
+                signIn,
+                signOut,
+                updateUser
             }}
         >
             {children}
