@@ -9,7 +9,6 @@ import { api } from '../../services/api';
 
 import Logo from '../../assets/logo.svg';
 import { Car } from '../../components/Car';
-import { CarDTO } from '../../dtos/carDTO';
 import { LoadAnimation } from '../../components/LoadAnimation';
 import { Car as ModelCar } from '../../database/model/Car';
 
@@ -29,7 +28,7 @@ export function Home() {
     const netInfo = useNetInfo();
     const navigation = useNavigation();
 
-    function handleCarDetails(car: CarDTO) {
+    function handleCarDetails(car: ModelCar) {
         navigation.navigate('CarDetails', {car});
     }
 
@@ -84,7 +83,7 @@ export function Home() {
     }, []);
  
     useEffect(() => {
-        if (netInfo.isConnected) {
+        if (netInfo.isConnected === true) {
             offLineSynchronize();
         }
     }, [netInfo.isConnected]);
