@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { FlatList, StatusBar } from 'react-native';
-import { useNavigation } from '@react-navigation/core';
+import { useNavigation, useIsFocused } from '@react-navigation/core';
 import { useTheme } from 'styled-components';
+import  { format, parseISO } from 'date-fns';
 import { AntDesign } from '@expo/vector-icons';
 import { BackButton } from '../../components/BackButton';
 import { Car } from '../../components/Car';
 import { LoadAnimation } from '../../components/LoadAnimation';
-import { CarDTO } from '../../dtos/carDTO';
+import { Car as ModelCar } from '../../database/model/Car';
 import { api } from '../../services/api';
 
 import {
@@ -27,18 +28,18 @@ import {
 
 } from './styles';
 
-interface CarProps {
+interface DataProps {
    id: string;
-   user_id: string;
-   car: CarDTO;
-   startDate: string;
-   endDate: string;
+   car: ModelCar;
+   start_date: string;
+   end_date: string;
 }
 
 export function MyCars() {
 
-   const [cars, setCars] = useState<CarProps[]> ([]);
+   const [cars, setCars] = useState<DataProps[]> ([]);
    const [loading, setLoading] = useState(true);
+   const screenIsFocus = useIsFocused();
 
    const navigation = useNavigation();
    const theme = useTheme();   
@@ -53,8 +54,17 @@ export function MyCars() {
          
          try {
 
-            const response = await api.get(`/schedules_byuser?user_id=1`);
-            setCars(response.data);
+            const response = await api.get(`rentals`);
+            const dateFormatted = response.data.map((data: DataProps) => {
+               return {
+                  id: data.id,
+                  car: data.car,
+                  start_date: format(parseISO(data.start_date), 'dd/MM/yyyy'),
+                  end_date: format(parseISO(data.end_date), 'dd/MM/yyyy')
+               }
+            }); 
+
+            setCars(dateFormatted);
          }
          catch(error) {
             console.log(error);
@@ -66,7 +76,7 @@ export function MyCars() {
 
       fetchCars();
 
-   }, []);
+   }, [screenIsFocus]);
 
 
    return (
@@ -124,14 +134,14 @@ export function MyCars() {
                         <CarFooter>
                            <CarFooterTitle>Perído</CarFooterTitle>
                            <CarFooterPerid>
-                              <CarFooterDate>{item.startDate}</CarFooterDate>
+                              <CarFooterDate>{item.start_date}</CarFooterDate>
                               <AntDesign   
                                  name="arrowright"
                                  size={20}
                                  color={theme.colors.title}
                                  style={{ marginHorizontal: 10 }}
                               />
-                              <CarFooterDate>{item.endDate}</CarFooterDate>
+                              <CarFooterDate>{item.end_date}</CarFooterDate>
                            </CarFooterPerid>
                         </CarFooter>
                      </CarWrapper>

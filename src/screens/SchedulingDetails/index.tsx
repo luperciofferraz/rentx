@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Alert } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
+import { useNetInfo } from '@react-native-community/netinfo';
 import { format } from 'date-fns';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { useTheme } from 'styled-components';
@@ -53,8 +54,10 @@ interface RentalPeriod {
 
 export function SchedulingDetails() {
 
+    const [carUpdated, setCarUpdated] = useState<CarDTO>( { } as CarDTO);
     const [loading, setLoading] = useState(false);
     const [rentalPeriod, setRentalPeriod] = useState<RentalPeriod>({} as RentalPeriod);
+    const netInfo = useNetInfo();
     const theme = useTheme();
     const navigation = useNavigation();
     const route = useRoute();
@@ -66,27 +69,17 @@ export function SchedulingDetails() {
 
         setLoading(true);
         
-        const schedulesByCar = await api.get(`/schedules_bycars/${car.id}`);
-
-        const unavailable_dates = [ ...schedulesByCar.data.unavailable_dates, ...dates ];
-
-        api.post('/schedules_byuser', {
+        await api.post('rentals', {
             user_id: 1,
-            car,
-            startDate: format(getPlatformDate(new Date(dates[0])), 'dd/MM/yyyy'),
-            endDate: format(getPlatformDate(new Date(dates[dates.length-1])), 'dd/MM/yyyy')
-        });
-
-        api.put(`/schedules_bycars/${car.id}`, {
-            id: car.id,
-            unavailable_dates,
+            car_id: car.id,
+            start_date: new Date(dates[0]),
+            end_date: new Date(dates[dates.length-1]),
+            total: rentTotal
         })
         .then(() => navigation.navigate('Confirmation', {
-
+            nextScreenRoute: 'Home',
             title: 'Carro alugado!',
-            message: `Agora você só precisa ir\n até a concessionária da RENTX\npegar o seu automóvel.`,
-            nextScreenRoute: 'Home'
-
+            message: `Agora você só precisa ir\n até a concessionária da RENTX\npegar o seu automóvel.`
         }))
         .catch(() => {
             setLoading(false);
@@ -108,6 +101,18 @@ export function SchedulingDetails() {
 
     },[]);
 
+    useEffect( () => {
+
+        async function fetchCarUpdated() {
+            const response = await api.get(`/cars/${car.id}`);
+            setCarUpdated(response.data);
+        }
+
+        if (netInfo.isConnected === true) {
+            fetchCarUpdated();
+        }
+
+    }, [netInfo.isConnected]);
 
     return (
 
@@ -122,7 +127,7 @@ export function SchedulingDetails() {
             <CarImages>
 
                 <ImageSlider 
-                    imagesUrl={car.photos}
+                    imagesUrl={!!carUpdated.photos ? carUpdated.photos : [{ id: car.thumbnail, photo: car.thumbnail }]}
                 />
 
             </CarImages>
@@ -143,17 +148,21 @@ export function SchedulingDetails() {
 
                 </Details>
 
-                <Accessories>
-                    {
-                        car.accessories.map(accessory => (
-                            <Acessory 
-                                key={accessory.type}
-                                name={accessory.name}
-                                icon={getAcessoryIcon(accessory.type)}
-                            />
-                        ))
-                    }
-                </Accessories>
+                {   
+                    carUpdated.accessories &&   
+                    
+                    <Accessories>
+                        {
+                            carUpdated.accessories.map(accessory => (
+                                <Acessory 
+                                    key={accessory.type}
+                                    name={accessory.name} 
+                                    icon={getAcessoryIcon(accessory.type)} 
+                                />
+                            ))
+                        }
+                    </Accessories>
+                }
 
                 <RentalPeriod>
 
