@@ -52,7 +52,6 @@ export function CarDetails() {
     
     const scrollHandler = useAnimatedScrollHandler(event => {
         scrollY.value = event.contentOffset.y;
-        console.log(event.contentOffset.y);
     });
  
     const headerStyleAnimation = useAnimatedStyle(() => {
